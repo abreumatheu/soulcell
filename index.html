@@ -42,6 +42,12 @@
         body.menu-open { overflow: hidden; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         section { padding: 80px 0; }
+        
+        /* AJUSTE PERFEITO DE NAVEGAÇÃO */
+        section[id] {
+            scroll-margin-top: 80px; /* Garante que o título não fique atrás do header */
+        }
+
         .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; }
         .section-subtitle { text-align: center; max-width: 600px; margin: 0 auto 3rem; color: var(--gray); }
 
@@ -149,46 +155,37 @@
             .verification-content { grid-template-columns: 1fr; }
             .verification-text { text-align: center; }
             
-            /* Mobile Menu Toggle Button */
             .mobile-menu-toggle {
-                display: block;
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                z-index: 1001;
-                color: var(--dark);
+                display: block; background: none; border: none;
+                font-size: 1.5rem; cursor: pointer; z-index: 1001; color: var(--dark);
             }
             .mobile-menu-toggle .icon-close { display: none; }
             
-            /* Nav Links become the Mobile Menu */
             .nav-links {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+                position: fixed; top: 0; left: 0;
+                width: 100%; height: 100%;
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 2.5rem;
+                flex-direction: column; justify-content: center; align-items: center;
+                gap: 1rem;
                 transform: translateX(100%);
                 transition: transform 0.3s ease-in-out;
                 z-index: 1000;
             }
-            .nav-links.active {
-                transform: translateX(0);
+            .nav-links.active { transform: translateX(0); }
+            .nav-links li {
+                opacity: 0;
+                transform: translateY(10px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
             }
-            .nav-links a {
-                font-size: 1.5rem;
-                font-weight: 600;
-            }
+            .nav-links.active li { opacity: 1; transform: translateY(0); }
+            .nav-links.active li:nth-child(1) { transition-delay: 0.1s; }
+            .nav-links.active li:nth-child(2) { transition-delay: 0.2s; }
+            .nav-links.active li:nth-child(3) { transition-delay: 0.3s; }
+            
+            .nav-links a { font-size: 1.5rem; font-weight: 600; padding: 1rem; }
 
-            /* --- CORREÇÃO APLICADA AQUI --- */
-            /* When menu is open, make header transparent to avoid double background */
             body.menu-open header {
                 background: transparent;
                 backdrop-filter: none;
@@ -212,7 +209,7 @@
                 <li><a href="#faq">Dúvidas</a></li>
             </ul>
 
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu" aria-controls="navMenu" aria-expanded="false">
                 <i class="fas fa-bars icon-open"></i>
                 <i class="fas fa-times icon-close"></i>
             </button>
@@ -338,6 +335,7 @@
             const navMenu = document.getElementById('navMenu');
             const navMenuLinks = navMenu.querySelectorAll('a');
 
+            // Header com Sombra e Botão Voltar ao Topo
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) { header.classList.add('scrolled'); } 
                 else { header.classList.remove('scrolled'); }
@@ -345,6 +343,7 @@
                 else { backToTopBtn.classList.remove('show'); }
             });
 
+            // Accordion do FAQ
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
                 question.addEventListener('click', () => {
@@ -363,6 +362,7 @@
                 });
             });
 
+            // Abas de Produtos
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const category = tab.dataset.category;
@@ -374,6 +374,7 @@
                 });
             });
             
+            // Link dinâmico do WhatsApp para cada produto
             productCards.forEach(card => {
                 const ctaButton = card.querySelector('.product-cta');
                 const productName = card.dataset.name;
@@ -384,13 +385,16 @@
                 ctaButton.target = '_blank';
             });
             
+            // Lógica do Menu Mobile "Perfeito"
             const toggleMenu = () => {
-                navMenu.classList.toggle('active');
+                const isOpened = navMenu.classList.toggle('active');
                 document.body.classList.toggle('menu-open');
+                mobileMenuToggle.setAttribute('aria-expanded', isOpened);
             };
 
             mobileMenuToggle.addEventListener('click', toggleMenu);
 
+            // Fechar menu ao clicar em um link
             navMenuLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     if (navMenu.classList.contains('active')) {
