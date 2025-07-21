@@ -39,6 +39,7 @@
             background-color: var(--white);
             -webkit-font-smoothing: antialiased;
         }
+        body.menu-open { overflow: hidden; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         section { padding: 80px 0; }
         .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; }
@@ -53,11 +54,16 @@
         }
         header.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         nav { display: flex; justify-content: space-between; align-items: center; height: 70px; }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--dark); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--dark); text-decoration: none; display: flex; align-items: center; gap: 8px; z-index: 1001; }
         .logo i { color: var(--primary); }
+        
+        /* Desktop Nav */
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { color: var(--dark); text-decoration: none; font-weight: 500; transition: var(--transition); }
         .nav-links a:hover { color: var(--primary); }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle { display: none; }
 
         /* --- HERO SECTION --- */
         .hero { padding-top: 140px; text-align: center; background-color: var(--light-gray); }
@@ -73,42 +79,21 @@
         /* --- PRODUCTS SECTION --- */
         #produtos { background-color: var(--white); }
         .tabs-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
-        .tab-btn {
-            padding: 10px 22px; font-size: 1rem; font-weight: 600; cursor: pointer;
-            border: 2px solid var(--light-gray); background-color: var(--light-gray);
-            color: var(--dark); border-radius: 50px; transition: var(--transition);
-        }
+        .tab-btn { padding: 10px 22px; font-size: 1rem; font-weight: 600; cursor: pointer; border: 2px solid var(--light-gray); background-color: var(--light-gray); color: var(--dark); border-radius: 50px; transition: var(--transition); }
         .tab-btn:hover { background-color: #e0e0e0; border-color: #e0e0e0; }
         .tab-btn.active { background-color: var(--primary); color: var(--white); border-color: var(--primary); }
-        .products-grid {
-            display: none; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem; animation: fadeIn 0.5s;
-        }
+        .products-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; animation: fadeIn 0.5s; }
         .products-grid.active { display: grid; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .product-card {
-            background-color: var(--light-gray); border-radius: var(--radius);
-            overflow: hidden; transition: var(--transition); border: 1px solid #e5e5e5;
-        }
+        .product-card { background-color: var(--light-gray); border-radius: var(--radius); overflow: hidden; transition: var(--transition); border: 1px solid #e5e5e5; }
         .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
-        .product-image {
-            height: 220px; background-color: #e9ecef; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; color: var(--gray);
-        }
+        .product-image { height: 220px; background-color: #e9ecef; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray); }
         .product-image i { font-size: 3rem; margin-bottom: 0.5rem; }
         .product-info { padding: 1.5rem; }
         .product-info h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
         .product-specs { color: var(--gray); font-weight: 500; margin-bottom: 1rem; min-height: 24px; }
-        .product-colors span {
-            display: inline-block; background-color: var(--white);
-            padding: 4px 10px; border-radius: 8px; font-size: 0.8rem;
-            font-weight: 500; margin-right: 6px; margin-bottom: 6px;
-        }
-        .product-cta {
-            display: block; width: 100%; padding: 12px; margin-top: 1rem;
-            background-color: var(--dark); color: var(--white); text-align: center;
-            text-decoration: none; font-weight: 600; border-radius: 10px; transition: var(--transition);
-        }
+        .product-colors span { display: inline-block; background-color: var(--white); padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 500; margin-right: 6px; margin-bottom: 6px; }
+        .product-cta { display: block; width: 100%; padding: 12px; margin-top: 1rem; background-color: var(--dark); color: var(--white); text-align: center; text-decoration: none; font-weight: 600; border-radius: 10px; transition: var(--transition); }
         .product-cta:hover { background-color: var(--primary); }
 
         /* --- VERIFICATION SECTION --- */
@@ -156,14 +141,54 @@
         .back-to-top.show { opacity: 1; transform: translateY(0); pointer-events: all; }
         .back-to-top:hover { background: var(--light-dark); }
 
-        /* --- MOBILE RESPONSIVE --- */
+        /* --- MOBILE RESPONSIVE & MENU --- */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .verification-content { grid-template-columns: 1fr; }
-            .verification-text { text-align: center; }
             .section-title { font-size: 2rem; }
             .tabs-container { gap: 0.5rem; }
             .tab-btn { padding: 8px 16px; font-size: 0.9rem; }
+            .verification-content { grid-template-columns: 1fr; }
+            .verification-text { text-align: center; }
+            
+            /* Mobile Menu Toggle Button */
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                z-index: 1001;
+                color: var(--dark);
+            }
+            .mobile-menu-toggle .icon-close { display: none; }
+            
+            /* Nav Links become the Mobile Menu */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2.5rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .nav-links.active {
+                transform: translateX(0);
+            }
+            .nav-links a {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            /* Change hamburger to 'X' when menu is active */
+            .body.menu-open .mobile-menu-toggle .icon-open { display: none; }
+            .body.menu-open .mobile-menu-toggle .icon-close { display: block; }
         }
     </style>
 </head>
@@ -172,11 +197,17 @@
     <header id="header">
         <nav class="container">
             <a href="#" class="logo"><i class="fa-brands fa-apple"></i> SoulCell</a>
-            <ul class="nav-links">
+            
+            <ul class="nav-links" id="navMenu">
                 <li><a href="#produtos">Produtos</a></li>
                 <li><a href="#verification">Segurança</a></li>
                 <li><a href="#faq">Dúvidas</a></li>
             </ul>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu">
+                <i class="fas fa-bars icon-open"></i>
+                <i class="fas fa-times icon-close"></i>
+            </button>
         </nav>
     </header>
 
@@ -217,26 +248,22 @@
                     <div class="product-card" data-name="iPhone 15 128GB"><div class="product-image"><i class="fas fa-camera"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>iPhone 15</h3><p class="product-specs">128GB</p><div class="product-colors"><span>Preto</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="iPhone 13 128GB"><div class="product-image"><i class="fas fa-camera"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>iPhone 13</h3><p class="product-specs">128GB</p><div class="product-colors"><span>Branco</span><span>Preto</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                 </div>
-                
                 <div class="products-grid" data-content="macbooks">
                     <div class="product-card" data-name="MacBook Pro M4 14” 24/512GB"><div class="product-image"><i class="fas fa-laptop"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>MacBook Pro M4 14”</h3><p class="product-specs">24GB RAM / 512GB SSD</p><div class="product-colors"><span>Preto</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="MacBook Pro M4 14” 16/512GB"><div class="product-image"><i class="fas fa-laptop"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>MacBook Pro M4 14”</h3><p class="product-specs">16GB RAM / 512GB SSD</p><div class="product-colors"><span>Preto</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="MacBook Air M4 13”"><div class="product-image"><i class="fas fa-laptop"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>MacBook Air M4 13”</h3><p class="product-specs">16GB RAM / 256GB SSD</p><div class="product-colors"><span>Skyblue</span><span>Starlight</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="MacBook Air M2 13”"><div class="product-image"><i class="fas fa-laptop"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>MacBook Air M2 13”</h3><p class="product-specs">16GB RAM / 256GB SSD</p><div class="product-colors"><span>Midnight</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                 </div>
-                
                 <div class="products-grid" data-content="ipads">
                     <div class="product-card" data-name="iPad 11 128GB"><div class="product-image"><i class="fas fa-tablet-alt"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>iPad 11</h3><p class="product-specs">128GB</p><div class="product-colors"><span>Silver</span><span>Rose</span><span>Azul</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="iPad 10 64GB"><div class="product-image"><i class="fas fa-tablet-alt"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>iPad 10</h3><p class="product-specs">64GB</p><div class="product-colors"><span>Silver</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                 </div>
-
                 <div class="products-grid" data-content="watches">
                     <div class="product-card" data-name="Apple Watch Série 10 46mm"><div class="product-image"><i class="fas fa-watch"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>Watch Série 10</h3><p class="product-specs">46mm</p><div class="product-colors"><span>Preto</span><span>Silver</span><span>Rose</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="Apple Watch Série 10 42mm"><div class="product-image"><i class="fas fa-watch"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>Watch Série 10</h3><p class="product-specs">42mm</p><div class="product-colors"><span>Rose</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="Apple Watch Série 9 45mm"><div class="product-image"><i class="fas fa-watch"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>Watch Série 9</h3><p class="product-specs">45mm</p><div class="product-colors"><span>Preto</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="Apple Watch SE 2ª Geração 44mm"><div class="product-image"><i class="fas fa-watch"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>Watch SE 2ª Geração</h3><p class="product-specs">44mm</p><div class="product-colors"><span>Preto</span><span>Silver</span></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                 </div>
-                
                 <div class="products-grid" data-content="acessorios">
                     <div class="product-card" data-name="AirPods Pro 2"><div class="product-image"><i class="fas fa-headphones"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>AirPods Pro 2</h3><p class="product-specs">Com estojo de recarga MagSafe (USB-C)</p><div class="product-colors"></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="AirPods 4 ANC"><div class="product-image"><i class="fas fa-headphones"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>AirPods 4 ANC</h3><p class="product-specs">Cancelamento Ativo de Ruído</p><div class="product-colors"></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
@@ -246,25 +273,14 @@
                     <div class="product-card" data-name="Tomada Dupla Tipo-C"><div class="product-image"><i class="fas fa-plug"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>Tomada Dupla Tipo-C</h3><p class="product-specs">Original</p><div class="product-colors"></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                     <div class="product-card" data-name="Tomada Tipo-C"><div class="product-image"><i class="fas fa-plug"></i><span>Sua imagem aqui</span></div><div class="product-info"><h3>Tomada Tipo-C</h3><p class="product-specs">Original</p><div class="product-colors"></div><a href="#" class="product-cta">Consultar no WhatsApp</a></div></div>
                 </div>
-
             </div>
         </section>
 
         <section id="verification" class="verification">
             <div class="container">
                 <div class="verification-content">
-                    <div class="verification-text">
-                        <h2>Sua Compra 100% Segura</h2>
-                        <p>Acreditamos na transparência total. Antes mesmo de abrir a caixa, você pode confirmar a autenticidade e a garantia do seu novo iPhone. Use o número de série do aparelho para checar diretamente no site da Apple. Simples, rápido e seguro.</p>
-                    </div>
-                    <div class="verification-box">
-                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
-                        <h3>Verifique a Autenticidade</h3>
-                        <p class="description">Clique no botão abaixo para ser direcionado ao site oficial da Apple e consultar a cobertura do seu produto.</p>
-                        <a href="https://checkcoverage.apple.com/?locale=pt_BR" target="_blank" class="btn-verify">
-                            <i class="fab fa-apple"></i> Verificar no Site da Apple
-                        </a>
-                    </div>
+                    <div class="verification-text"><h2>Sua Compra 100% Segura</h2><p>Acreditamos na transparência total. Antes mesmo de abrir a caixa, você pode confirmar a autenticidade e a garantia do seu novo iPhone. Use o número de série do aparelho para checar diretamente no site da Apple. Simples, rápido e seguro.</p></div>
+                    <div class="verification-box"><div class="icon"><i class="fas fa-shield-alt"></i></div><h3>Verifique a Autenticidade</h3><p class="description">Clique no botão abaixo para ser direcionado ao site oficial da Apple e consultar a cobertura do seu produto.</p><a href="https://checkcoverage.apple.com/?locale=pt_BR" target="_blank" class="btn-verify"><i class="fab fa-apple"></i> Verificar no Site da Apple</a></div>
                 </div>
             </div>
         </section>
@@ -285,9 +301,7 @@
             <div class="container">
                 <h2>Pronto para escolher seu novo Apple?</h2>
                 <p>Nossa equipe está pronta para te atender e tirar todas as suas dúvidas.</p>
-                <a href="https://wa.me/5511912659726?text=Olá! Estou pronto para escolher meu novo produto Apple. Pode me ajudar?" target="_blank" class="cta-button">
-                    <i class="fab fa-whatsapp"></i> Falar com um Vendedor
-                </a>
+                <a href="https://wa.me/5511912659726?text=Olá! Estou pronto para escolher meu novo produto Apple. Pode me ajudar?" target="_blank" class="cta-button"><i class="fab fa-whatsapp"></i> Falar com um Vendedor</a>
             </div>
         </section>
     </main>
@@ -296,9 +310,7 @@
         <div class="container">
             <div class="footer-logo"><i class="fa-brands fa-apple"></i> SoulCell</div>
             <p>Sua fonte confiável para produtos Apple no Brasil.</p>
-            <div class="footer-social">
-                <a href="https://wa.me/5511912659726?text=Olá! Vim pelo site!" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            </div>
+            <div class="footer-social"><a href="https://wa.me/5511912659726?text=Olá! Vim pelo site!" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
             <div class="footer-bottom">SoulCell &copy; 2024 - Todos os direitos reservados.</div>
         </div>
     </footer>
@@ -307,68 +319,85 @@
     <a href="#" class="back-to-top" id="backToTopBtn" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></a>
 
     <script>
-        // --- SCRIPT EXISTENTE ---
-        const header = document.getElementById('header');
-        const backToTopBtn = document.getElementById('backToTopBtn');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) { header.classList.add('scrolled'); } 
-            else { header.classList.remove('scrolled'); }
-            if (window.scrollY > 300) { backToTopBtn.classList.add('show'); } 
-            else { backToTopBtn.classList.remove('show'); }
-        });
+        // --- Scripts Gerais (Header, Back to Top, FAQ, Produtos) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('header');
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const tabs = document.querySelectorAll('.tab-btn');
+            const grids = document.querySelectorAll('.products-grid');
+            const productCards = document.querySelectorAll('.product-card');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const navMenu = document.getElementById('navMenu');
+            const navMenuLinks = navMenu.querySelectorAll('a');
 
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                const currentlyActive = document.querySelector('.faq-item.active');
-                if (currentlyActive && currentlyActive !== item) {
-                    currentlyActive.classList.remove('active');
-                    currentlyActive.querySelector('.faq-answer').style.maxHeight = 0;
-                }
-                item.classList.toggle('active');
-                const answer = item.querySelector('.faq-answer');
-                if (item.classList.contains('active')) {
-                    answer.style.maxHeight = answer.scrollHeight + 'px';
-                } else {
-                    answer.style.maxHeight = 0;
-                }
+            // Header com Sombra e Botão Voltar ao Topo
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) { header.classList.add('scrolled'); } 
+                else { header.classList.remove('scrolled'); }
+                if (window.scrollY > 300) { backToTopBtn.classList.add('show'); } 
+                else { backToTopBtn.classList.remove('show'); }
             });
-        });
 
-        // --- NOVO SCRIPT PARA PRODUTOS ---
-        const tabs = document.querySelectorAll('.tab-btn');
-        const grids = document.querySelectorAll('.products-grid');
-        const productCards = document.querySelectorAll('.product-card');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const category = tab.dataset.category;
-
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-
-                grids.forEach(grid => {
-                    if (grid.dataset.content === category) {
-                        grid.classList.add('active');
+            // Accordion do FAQ
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const currentlyActive = document.querySelector('.faq-item.active');
+                    if (currentlyActive && currentlyActive !== item) {
+                        currentlyActive.classList.remove('active');
+                        currentlyActive.querySelector('.faq-answer').style.maxHeight = 0;
+                    }
+                    item.classList.toggle('active');
+                    const answer = item.querySelector('.faq-answer');
+                    if (item.classList.contains('active')) {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
                     } else {
-                        grid.classList.remove('active');
+                        answer.style.maxHeight = 0;
+                    }
+                });
+            });
+
+            // Abas de Produtos
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    grids.forEach(grid => {
+                        grid.classList.toggle('active', grid.dataset.content === category);
+                    });
+                });
+            });
+            
+            // Link dinâmico do WhatsApp para cada produto
+            productCards.forEach(card => {
+                const ctaButton = card.querySelector('.product-cta');
+                const productName = card.dataset.name;
+                const whatsappNumber = '5511912659726';
+                const message = `Olá! Tenho interesse no produto: ${productName}. Poderia me passar mais informações?`;
+                const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                ctaButton.href = whatsappLink;
+                ctaButton.target = '_blank';
+            });
+            
+            // --- NOVO: Lógica do Menu Mobile ---
+            const toggleMenu = () => {
+                navMenu.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            };
+
+            mobileMenuToggle.addEventListener('click', toggleMenu);
+
+            // Fechar menu ao clicar em um link
+            navMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navMenu.classList.contains('active')) {
+                        toggleMenu();
                     }
                 });
             });
         });
-        
-        // Link dinâmico do WhatsApp para cada produto
-        productCards.forEach(card => {
-            const ctaButton = card.querySelector('.product-cta');
-            const productName = card.dataset.name;
-            const whatsappNumber = '5511912659726'; // SEU NÚMERO DE WHATSAPP AQUI
-            const message = `Olá! Tenho interesse no produto: ${productName}. Poderia me passar mais informações?`;
-            const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-            ctaButton.href = whatsappLink;
-            ctaButton.target = '_blank';
-        });
-
     </script>
 </body>
 </html>
